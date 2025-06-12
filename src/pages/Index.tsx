@@ -1,9 +1,8 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Star, Check, ArrowRight, Play, Image as ImageIcon, Users, Contact } from 'lucide-react';
+import { Star, Check, ArrowRight, Play, Users, Contact, FileImage } from 'lucide-react';
 
 const Index = () => {
   const [activeSection, setActiveSection] = useState('home');
@@ -45,7 +44,7 @@ const Index = () => {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="text-2xl font-playfair font-bold text-gradient">
-              ProEdit Studio
+              Videophix
             </div>
             <div className="hidden md:flex space-x-8">
               {[
@@ -84,10 +83,10 @@ const Index = () => {
             <div className="space-y-6 animate-fade-in">
               <h1 className="text-5xl md:text-6xl font-playfair font-bold leading-tight">
                 Transform Your Content with 
-                <span className="block text-yellow-300">Expert Editing</span>
+                <span className="block text-gray-300">Expert Editing</span>
               </h1>
               <p className="text-xl text-gray-200 leading-relaxed">
-                Professional video and photo editing services that bring your vision to life. 
+                Professional video editing and thumbnail design services that bring your vision to life. 
                 From color correction to creative storytelling, we craft content that captivates.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
@@ -206,7 +205,7 @@ const Index = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 gap-8">
             {[
               {
                 icon: <Play className="h-8 w-8" />,
@@ -215,16 +214,10 @@ const Index = () => {
                 features: ["Color Correction", "Audio Sync", "Transitions", "Motion Graphics"]
               },
               {
-                icon: <ImageIcon className="h-8 w-8" />,
-                title: "Photo Editing",
-                description: "Advanced photo retouching and enhancement for stunning visual impact",
-                features: ["Retouching", "Color Grading", "Background Removal", "Compositing"]
-              },
-              {
-                icon: <Star className="h-8 w-8" />,
-                title: "Content Creation",
-                description: "End-to-end content creation from concept to final delivery",
-                features: ["Concept Development", "Storyboarding", "Production", "Post-Production"]
+                icon: <FileImage className="h-8 w-8" />,
+                title: "Thumbnail Designing",
+                description: "Eye-catching thumbnail designs that boost your video's click-through rate",
+                features: ["Custom Designs", "Brand Consistency", "High Impact Visuals", "A/B Testing Options"]
               }
             ].map((service, index) => (
               <Card key={index} className="hover-lift">
@@ -469,10 +462,10 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="text-2xl font-playfair font-bold text-white mb-4 md:mb-0">
-              ProEdit Studio
+              Videophix
             </div>
             <div className="text-sm">
-              © 2024 ProEdit Studio. All rights reserved. | Built for performance and creativity.
+              © 2024 Videophix. All rights reserved. | Built for performance and creativity.
             </div>
           </div>
         </div>
