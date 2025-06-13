@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Star, Check, ArrowRight, Play, Users, Contact, FileImage, ExternalLink, MessageCircle } from 'lucide-react';
+import { Star, Check, ArrowRight, Play, Users, Contact, FileImage, ExternalLink, MessageCircle, Send } from 'lucide-react';
 
 const Index = () => {
   const [activeSection, setActiveSection] = useState('home');
@@ -41,6 +41,10 @@ const Index = () => {
     window.open('https://discord.gg/your-server', '_blank');
   };
 
+  const openTelegram = () => {
+    window.open('https://t.me/your-channel', '_blank');
+  };
+
   return (
     <div className="min-h-screen bg-background">
       {/* Enhanced Navigation */}
@@ -70,13 +74,23 @@ const Index = () => {
                 </button>
               ))}
             </div>
-            <Button 
-              onClick={openDiscord}
-              className="gradient-purple text-white hover:opacity-90 font-semibold"
-            >
-              <MessageCircle className="h-4 w-4 mr-2" />
-              Join Discord
-            </Button>
+            <div className="flex items-center space-x-2">
+              <Button 
+                onClick={openDiscord}
+                className="gradient-purple text-white hover:opacity-90 font-semibold"
+              >
+                <MessageCircle className="h-4 w-4 mr-2" />
+                Discord
+              </Button>
+              <Button 
+                onClick={openTelegram}
+                variant="outline"
+                className="font-semibold"
+              >
+                <Send className="h-4 w-4 mr-2" />
+                Telegram
+              </Button>
+            </div>
           </div>
         </div>
       </nav>
@@ -115,13 +129,23 @@ const Index = () => {
                 >
                   See Our Packages
                 </Button>
-                <Button 
-                  size="lg" 
-                  onClick={openDiscord}
-                  className="border border-white/30 bg-white/10 text-white hover:bg-white/20 font-semibold"
-                >
-                  Get Free Quote
-                </Button>
+                <div className="flex space-x-2">
+                  <Button 
+                    size="lg" 
+                    onClick={openDiscord}
+                    className="border border-white/30 bg-white/10 text-white hover:bg-white/20 font-semibold"
+                  >
+                    Discord Quote
+                  </Button>
+                  <Button 
+                    size="lg" 
+                    onClick={openTelegram}
+                    variant="outline"
+                    className="border-white text-white hover:bg-white hover:text-gray-900 font-semibold"
+                  >
+                    Telegram Quote
+                  </Button>
+                </div>
               </div>
 
               {/* Trust Indicators */}
@@ -246,13 +270,22 @@ const Index = () => {
           </div>
 
           {/* Portfolio CTA */}
-          <div className="text-center">
+          <div className="text-center flex justify-center space-x-4">
             <Button 
               size="lg"
               onClick={openDiscord}
               className="gradient-purple text-white hover:opacity-90 font-semibold"
             >
-              Start Your Project Today
+              Start Your Project (Discord)
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
+            <Button 
+              size="lg"
+              onClick={openTelegram}
+              variant="outline"
+              className="font-semibold"
+            >
+              Start Your Project (Telegram)
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </div>
@@ -327,13 +360,22 @@ const Index = () => {
                       <h4 className="font-semibold mb-2">Our Process:</h4>
                       <p className="text-sm text-muted-foreground">{service.process}</p>
                     </div>
-                    <Button 
-                      onClick={openDiscord}
-                      className="w-full"
-                      variant="outline"
-                    >
-                      Get Quote for {service.title}
-                    </Button>
+                    <div className="flex space-x-2">
+                      <Button 
+                        onClick={openDiscord}
+                        className="flex-1"
+                        variant="outline"
+                      >
+                        Discord Quote
+                      </Button>
+                      <Button 
+                        onClick={openTelegram}
+                        className="flex-1"
+                        variant="outline"
+                      >
+                        Telegram Quote
+                      </Button>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -347,14 +389,25 @@ const Index = () => {
               We also handle special projects, rush orders, and bulk editing packages. 
               Let's discuss your specific needs and create a tailored solution.
             </p>
-            <Button 
-              size="lg"
-              onClick={openDiscord}
-              className="gradient-purple text-white hover:opacity-90 font-semibold"
-            >
-              Discuss Your Project
-              <MessageCircle className="ml-2 h-4 w-4" />
-            </Button>
+            <div className="flex justify-center space-x-4">
+              <Button 
+                size="lg"
+                onClick={openDiscord}
+                className="gradient-purple text-white hover:opacity-90 font-semibold"
+              >
+                Discuss on Discord
+                <MessageCircle className="ml-2 h-4 w-4" />
+              </Button>
+              <Button 
+                size="lg"
+                onClick={openTelegram}
+                variant="outline"
+                className="font-semibold"
+              >
+                Discuss on Telegram
+                <Send className="ml-2 h-4 w-4" />
+              </Button>
+            </div>
           </div>
         </div>
       </section>
@@ -366,7 +419,7 @@ const Index = () => {
             <Badge className="mb-4">Plans & Pricing</Badge>
             <h2 className="text-4xl font-playfair font-bold mb-4 text-gradient">Choose Your Perfect Plan</h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Transparent pricing with no hidden fees. All purchases are processed through our Discord server 
+              Transparent pricing with no hidden fees. All purchases are processed through our Discord or Telegram 
               for personalized service and direct communication with our team.
             </p>
           </div>
@@ -375,8 +428,8 @@ const Index = () => {
             {[
               {
                 title: "Starter",
-                price: "$49",
-                originalPrice: "$79",
+                price: "$49/₹4,100",
+                originalPrice: "$79/₹6,600",
                 description: "Perfect for simple edits and quick turnarounds",
                 features: [
                   "Basic color correction",
@@ -391,8 +444,8 @@ const Index = () => {
               },
               {
                 title: "Professional",
-                price: "$149",
-                originalPrice: "$199",
+                price: "$149/₹12,500",
+                originalPrice: "$199/₹16,700",
                 description: "Our most popular choice for content creators",
                 features: [
                   "Advanced color grading",
@@ -409,8 +462,8 @@ const Index = () => {
               },
               {
                 title: "Premium",
-                price: "$299",
-                originalPrice: "$399",
+                price: "$299/₹25,000",
+                originalPrice: "$399/₹33,500",
                 description: "Complete package for professional productions",
                 features: [
                   "Cinema-grade color grading",
@@ -456,15 +509,24 @@ const Index = () => {
                     ))}
                   </ul>
                   <div className="space-y-3">
-                    <Button 
-                      className={`w-full font-semibold ${plan.popular ? 'gradient-purple text-white' : ''}`}
-                      variant={plan.popular ? 'default' : 'outline'}
-                      onClick={openDiscord}
-                    >
-                      {plan.cta}
-                    </Button>
+                    <div className="flex space-x-2">
+                      <Button 
+                        className={`flex-1 font-semibold ${plan.popular ? 'gradient-purple text-white' : ''}`}
+                        variant={plan.popular ? 'default' : 'outline'}
+                        onClick={openDiscord}
+                      >
+                        Discord
+                      </Button>
+                      <Button 
+                        className="flex-1 font-semibold"
+                        variant="outline"
+                        onClick={openTelegram}
+                      >
+                        Telegram
+                      </Button>
+                    </div>
                     <p className="text-xs text-center text-muted-foreground">
-                      Join Discord to purchase • Secure payment • Direct communication
+                      Choose your platform • Secure payment • Direct communication
                     </p>
                   </div>
                 </CardContent>
@@ -476,23 +538,31 @@ const Index = () => {
           <div className="text-center bg-white rounded-2xl p-8 shadow-sm">
             <h3 className="text-2xl font-semibold mb-4">Ready to Get Started?</h3>
             <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-              Join our Discord server to discuss your project, ask questions, and complete your purchase. 
+              Join our Discord server or Telegram channel to discuss your project, ask questions, and complete your purchase. 
               Our team is ready to help bring your vision to life.
             </p>
-            <Button 
-              size="lg"
-              onClick={openDiscord}
-              className="gradient-purple text-white hover:opacity-90 font-semibold"
-            >
-              <MessageCircle className="mr-2 h-5 w-5" />
-              Join Discord & Purchase
-            </Button>
+            <div className="flex justify-center space-x-4">
+              <Button 
+                size="lg"
+                onClick={openDiscord}
+                className="gradient-purple text-white hover:opacity-90 font-semibold"
+              >
+                <MessageCircle className="mr-2 h-5 w-5" />
+                Join Discord & Purchase
+              </Button>
+              <Button 
+                size="lg"
+                onClick={openTelegram}
+                variant="outline"
+                className="font-semibold"
+              >
+                <Send className="mr-2 h-5 w-5" />
+                Join Telegram & Purchase
+              </Button>
+            </div>
           </div>
         </div>
       </section>
-
-      {/* Keep existing testimonials and contact sections unchanged */}
-      // ... keep existing code (testimonials section)
 
       {/* Testimonials Section */}
       <section id="testimonials" className="py-20">
@@ -567,7 +637,7 @@ const Index = () => {
             <Badge className="mb-4 bg-white/20 text-white border-white/30">Get in Touch</Badge>
             <h2 className="text-4xl font-playfair font-bold mb-4">Ready to Transform Your Content?</h2>
             <p className="text-xl text-gray-200 max-w-3xl mx-auto">
-              Join our Discord community to discuss your project, get a custom quote, and connect with our editing team. 
+              Join our Discord community or Telegram channel to discuss your project, get a custom quote, and connect with our editing team. 
               We're here to help bring your creative vision to life.
             </p>
           </div>
@@ -607,7 +677,7 @@ const Index = () => {
               <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
                 <h3 className="text-2xl font-semibold mb-4">Start Your Project Today</h3>
                 <p className="text-gray-200 mb-6">
-                  Click below to join our Discord server, discuss your editing needs, and get started with professional video editing services.
+                  Choose your preferred platform to discuss your editing needs and get started with professional video editing services.
                 </p>
                 <div className="space-y-4">
                   <Button 
@@ -617,6 +687,16 @@ const Index = () => {
                   >
                     <MessageCircle className="mr-2 h-5 w-5" />
                     Join Discord Server
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                  <Button 
+                    size="lg"
+                    onClick={openTelegram}
+                    variant="outline"
+                    className="border-white text-white hover:bg-white hover:text-gray-900 font-semibold w-full"
+                  >
+                    <Send className="mr-2 h-5 w-5" />
+                    Join Telegram Channel
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                   <div className="text-center">
