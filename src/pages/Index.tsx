@@ -174,8 +174,8 @@ const Index = () => {
                   loading="eager"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm hover:bg-white/30 transition-colors cursor-pointer">
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm hover:bg-white/30 transition-colors cursor-pointer pointer-events-auto">
                     <Play className="h-8 w-8 text-white ml-1" />
                   </div>
                 </div>
