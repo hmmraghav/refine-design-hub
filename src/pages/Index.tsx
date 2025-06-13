@@ -1,355 +1,627 @@
+import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Star, Play, Users, Award, CheckCircle } from "lucide-react";
+import { Star, Check, ArrowRight, Play, Users, Contact, FileImage, ExternalLink, MessageCircle, Send } from 'lucide-react';
 
 const Index = () => {
+  const [activeSection, setActiveSection] = useState('home');
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = ['home', 'portfolio', 'services', 'pricing', 'testimonials', 'contact'];
+      const scrollPosition = window.scrollY + 100;
+
+      for (const section of sections) {
+        const element = document.getElementById(section);
+        if (element) {
+          const offsetTop = element.offsetTop;
+          const offsetHeight = element.offsetHeight;
+          
+          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+            setActiveSection(section);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const openDiscord = () => {
+    window.open('https://discord.gg/your-server', '_blank');
+  };
+
+  const openTelegram = () => {
+    window.open('https://t.me/your-channel', '_blank');
+  };
+
   return (
     <div className="min-h-screen bg-background">
-      {/* Navigation */}
-      <nav className="fixed top-0 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50 border-b">
-        <div className="container flex h-14 items-center">
-          <div className="mr-4 flex">
-            <a className="mr-6 flex items-center space-x-2" href="/">
-              <div className="h-6 w-6 bg-white rounded"></div>
-              <span className="font-bold text-white">Videophix</span>
-            </a>
-          </div>
-          <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
-            <nav className="flex items-center space-x-6 text-sm font-medium">
-              <a href="#portfolio" className="text-muted-foreground hover:text-white transition-colors">Portfolio</a>
-              <a href="#services" className="text-muted-foreground hover:text-white transition-colors">Services</a>
-              <a href="#pricing" className="text-muted-foreground hover:text-white transition-colors">Pricing</a>
-              <a href="#contact" className="text-muted-foreground hover:text-white transition-colors">Contact</a>
-            </nav>
+      {/* Enhanced Navigation */}
+      <nav className="fixed top-0 w-full z-50 glass-effect border-b border-white/10">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            <div className="text-2xl font-playfair font-bold text-gradient">
+              Videophix
+            </div>
+            <div className="hidden md:flex items-center space-x-8">
+              {[
+                { id: 'home', label: 'Home' },
+                { id: 'portfolio', label: 'Our Work' },
+                { id: 'services', label: 'What We Do' },
+                { id: 'pricing', label: 'Plans & Pricing' },
+                { id: 'testimonials', label: 'Client Reviews' },
+                { id: 'contact', label: 'Get in Touch' }
+              ].map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => scrollToSection(item.id)}
+                  className={`transition-all duration-300 hover:text-primary font-medium ${
+                    activeSection === item.id ? 'text-primary border-b-2 border-primary pb-1' : 'text-muted-foreground hover:text-foreground'
+                  }`}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+            <div className="flex items-center space-x-2">
+              <Button 
+                onClick={openDiscord}
+                className="gradient-purple text-white hover:opacity-90 font-semibold"
+              >
+                <MessageCircle className="h-4 w-4 mr-2" />
+                Discord
+              </Button>
+              <Button 
+                onClick={openTelegram}
+                variant="outline"
+                className="font-semibold"
+              >
+                <Send className="h-4 w-4 mr-2" />
+                Telegram
+              </Button>
+            </div>
           </div>
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <section className="pt-20 pb-16 px-4 text-center">
-        <div className="container mx-auto max-w-4xl">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white">
-            Professional Video Editing & Thumbnail Design
-          </h1>
-          <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Transform your content with our expert editing team. We specialize in creating engaging videos and eye-catching thumbnails that drive views and engagement.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-            <Button size="lg" className="bg-white text-black hover:bg-gray-200">
-              <span className="text-black font-semibold">View Our Work</span>
-            </Button>
-            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-black">
-              <span className="font-semibold">See Our Packages</span>
-            </Button>
-          </div>
-          
-          {/* Video Section with Edit Instructions */}
-          <div className="relative max-w-3xl mx-auto">
-            <div className="bg-gray-800 rounded-lg p-8 text-center">
-              <Play className="h-16 w-16 mx-auto mb-4 text-white" />
-              <h3 className="text-xl font-semibold mb-2 text-white">Demo Reel</h3>
-              <p className="text-muted-foreground mb-4">See our latest work in action</p>
-              <div className="bg-gray-700 p-4 rounded text-left text-sm text-gray-300">
-                <p className="font-semibold text-white mb-2">How to add your video:</p>
-                <ol className="list-decimal list-inside space-y-1">
-                  <li>Upload your video file to your hosting service</li>
-                  <li>Replace this section with an HTML5 video element or embed code</li>
-                  <li>Example: &lt;video controls&gt;&lt;source src="your-video.mp4"&gt;&lt;/video&gt;</li>
-                  <li>For YouTube: Use an iframe with your video's embed URL</li>
-                </ol>
+      {/* Enhanced Hero Section */}
+      <section id="home" className="pt-20 pb-16 gradient-bg text-white">
+        <div className="container mx-auto px-4 py-20">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div className="space-y-8 animate-fade-in">
+              <div className="space-y-4">
+                <Badge className="bg-white/20 text-white border-white/30">Professional Video Editing Team</Badge>
+                <h1 className="text-5xl md:text-6xl font-playfair font-bold leading-tight">
+                  Transform Your Content with 
+                  <span className="block text-gray-300">Expert Video Editing</span>
+                </h1>
+                <p className="text-xl text-gray-200 leading-relaxed max-w-lg">
+                  From YouTube videos to brand commercials, we bring your vision to life with professional editing and eye-catching thumbnail designs that drive engagement.
+                </p>
+              </div>
+              
+              {/* Enhanced CTAs */}
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Button 
+                  size="lg" 
+                  onClick={() => scrollToSection('portfolio')}
+                  className="bg-white text-gray-900 hover:bg-gray-100 font-semibold group"
+                >
+                  View Our Work
+                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                </Button>
+                <Button 
+                  size="lg" 
+                  variant="outline"
+                  onClick={() => scrollToSection('pricing')}
+                  className="border-white text-white hover:bg-white hover:text-gray-900 font-semibold"
+                >
+                  See Our Packages
+                </Button>
+                <div className="flex space-x-2">
+                  <Button 
+                    size="lg" 
+                    onClick={openDiscord}
+                    className="border border-white/30 bg-white/10 text-white hover:bg-white/20 font-semibold"
+                  >
+                    Discord Quote
+                  </Button>
+                  <Button 
+                    size="lg" 
+                    onClick={openTelegram}
+                    variant="outline"
+                    className="border-white text-white hover:bg-white hover:text-gray-900 font-semibold"
+                  >
+                    Telegram Quote
+                  </Button>
+                </div>
+              </div>
+
+              {/* Trust Indicators */}
+              <div className="flex items-center space-x-6 pt-4">
+                <div className="text-center">
+                  <div className="text-2xl font-bold">500+</div>
+                  <div className="text-sm text-gray-300">Videos Edited</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold">50+</div>
+                  <div className="text-sm text-gray-300">Happy Clients</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold">24h</div>
+                  <div className="text-sm text-gray-300">Avg. Delivery</div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="relative animate-float">
+              <div className="aspect-video bg-gray-800 rounded-2xl overflow-hidden shadow-2xl">
+                <img 
+                  src="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=600&h=400&fit=crop&crop=center"
+                  alt="Professional video editing workspace showcasing our expertise" 
+                  className="w-full h-full object-cover"
+                  loading="eager"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm hover:bg-white/30 transition-colors cursor-pointer pointer-events-auto">
+                    <Play className="h-8 w-8 text-white ml-1" />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Portfolio Section */}
-      <section id="portfolio" className="py-16 px-4 bg-gray-900">
-        <div className="container mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12 text-white">Our Portfolio</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {/* Enhanced Portfolio Section */}
+      <section id="portfolio" className="py-20 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <Badge className="mb-4">Our Work</Badge>
+            <h2 className="text-4xl font-playfair font-bold mb-4 text-gradient">Professional Video Editing Portfolio</h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              See how we transform raw footage into compelling stories. From corporate videos to social media content, 
+              our editing expertise delivers results that engage and convert.
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
             {[
               {
-                title: "Gaming Montage",
-                description: "High-energy gaming compilation with custom transitions and effects",
-                category: "Video Editing",
-                image: "/placeholder.svg"
+                title: "Tech Startup Product Launch",
+                category: "Commercial Video",
+                description: "Complete editing with motion graphics, sound design, and color grading",
+                image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=300&fit=crop",
+                results: "2M+ views, 15% conversion rate"
               },
               {
-                title: "YouTube Thumbnail Set",
-                description: "Eye-catching thumbnail designs that increased CTR by 40%",
-                category: "Thumbnail Design",
-                image: "/placeholder.svg"
+                title: "YouTube Channel Transformation",
+                category: "Content Creation",
+                description: "Series editing with custom thumbnails and consistent branding",
+                image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=400&h=300&fit=crop",
+                results: "300% subscriber growth"
               },
               {
-                title: "Product Review Edit",
-                description: "Professional product showcase with clean cuts and color grading",
-                category: "Video Editing",
-                image: "/placeholder.svg"
+                title: "E-commerce Product Showcase",
+                category: "Product Video",
+                description: "Dynamic product demonstrations with professional lighting effects",
+                image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400&h=300&fit=crop",
+                results: "40% increase in sales"
               },
               {
-                title: "Vlog Series Thumbnails",
-                description: "Consistent branding across 20+ thumbnail designs",
-                category: "Thumbnail Design",
-                image: "/placeholder.svg"
+                title: "Wedding Highlight Reel",
+                category: "Event Video",
+                description: "Emotional storytelling with cinematic color grading and music sync",
+                image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=300&fit=crop",
+                results: "Client featured on wedding blogs"
               },
               {
-                title: "Educational Content",
-                description: "Clear, engaging educational video with motion graphics",
-                category: "Video Editing",
-                image: "/placeholder.svg"
+                title: "Social Media Campaign",
+                category: "Short-form Content",
+                description: "Series of engaging videos optimized for different platforms",
+                image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=400&h=300&fit=crop",
+                results: "500K+ total engagements"
               },
               {
-                title: "Stream Highlights",
-                description: "Best moments compilation with dynamic transitions",
-                category: "Video Editing",
-                image: "/placeholder.svg"
+                title: "Documentary Series",
+                category: "Long-form Content",
+                description: "Multi-episode series with professional interviews and B-roll",
+                image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=300&fit=crop",
+                results: "Featured at film festival"
               }
             ].map((item, index) => (
-              <Card key={index} className="bg-gray-800 border-gray-700 hover-lift">
-                <div className="aspect-video bg-gray-700 rounded-t-lg flex items-center justify-center">
-                  <Play className="h-12 w-12 text-white" />
+              <Card key={index} className="hover-lift cursor-pointer group">
+                <div className="relative overflow-hidden rounded-t-lg">
+                  <img 
+                    src={item.image} 
+                    alt={item.title}
+                    className="w-full h-48 object-cover transition-transform group-hover:scale-110"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="absolute bottom-4 left-4 right-4 text-white">
+                      <Badge variant="secondary" className="mb-2">{item.category}</Badge>
+                      <p className="text-sm font-medium">{item.results}</p>
+                    </div>
+                  </div>
                 </div>
-                <CardHeader>
-                  <div className="flex justify-between items-start">
-                    <CardTitle className="text-white">{item.title}</CardTitle>
-                    <Badge variant="secondary">{item.category}</Badge>
-                  </div>
-                  <CardDescription className="text-gray-300">{item.description}</CardDescription>
-                </CardHeader>
-              </Card>
-            ))}
-          </div>
-          <div className="text-center mt-12">
-            <Button size="lg" className="bg-white text-black hover:bg-gray-200">
-              <span className="text-black font-semibold">Contact Us for Your Project</span>
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* Services Section */}
-      <section id="services" className="py-16 px-4">
-        <div className="container mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12 text-white">Our Services</h2>
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            <Card className="bg-gray-800 border-gray-700">
-              <CardHeader>
-                <CardTitle className="text-white flex items-center gap-2">
-                  <Play className="h-5 w-5" />
-                  Video Editing
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-300 mb-4">
-                  Professional video editing services including cuts, transitions, color grading, audio mixing, and special effects.
-                </p>
-                <ul className="space-y-2 text-gray-300">
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-400" />
-                    Color correction and grading
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-400" />
-                    Audio enhancement and mixing
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-400" />
-                    Custom transitions and effects
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-400" />
-                    Motion graphics integration
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-gray-800 border-gray-700">
-              <CardHeader>
-                <CardTitle className="text-white flex items-center gap-2">
-                  <Award className="h-5 w-5" />
-                  Thumbnail Designing
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-300 mb-4">
-                  Eye-catching thumbnail designs that increase click-through rates and help your content stand out.
-                </p>
-                <ul className="space-y-2 text-gray-300">
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-400" />
-                    Custom graphic design
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-400" />
-                    A/B testing variations
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-400" />
-                    Platform optimization
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-400" />
-                    Brand consistency
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
-          </div>
-          <div className="text-center mt-12">
-            <Button size="lg" className="bg-white text-black hover:bg-gray-200">
-              <span className="text-black font-semibold">Get Started Today</span>
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* Pricing Section */}
-      <section id="pricing" className="py-16 px-4 bg-gray-900">
-        <div className="container mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-4 text-white">Choose Your Plan</h2>
-          <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
-            Select the perfect plan for your editing needs. All plans include direct Discord support and fast delivery.
-          </p>
-          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {[
-              {
-                title: "Basic Plan",
-                price: "$25",
-                description: "Perfect for simple editing projects and individual creators",
-                features: [
-                  "Basic video editing (cuts, transitions)",
-                  "Color correction",
-                  "Audio balancing",
-                  "2 thumbnail designs",
-                  "48-hour delivery",
-                  "1 revision included"
-                ]
-              },
-              {
-                title: "Standard Plan",
-                price: "$50",
-                description: "Great for regular content creators who need consistent quality",
-                features: [
-                  "Advanced video editing",
-                  "Color grading",
-                  "Audio enhancement & music",
-                  "5 thumbnail designs",
-                  "Motion graphics (basic)",
-                  "24-hour delivery",
-                  "3 revisions included"
-                ],
-                popular: true
-              },
-              {
-                title: "Premium Plan",
-                price: "$100",
-                description: "Professional package for serious content creators and businesses",
-                features: [
-                  "Professional video editing",
-                  "Advanced color grading",
-                  "Custom audio mixing",
-                  "10 thumbnail designs",
-                  "Advanced motion graphics",
-                  "12-hour delivery",
-                  "Unlimited revisions",
-                  "Custom effects & animations"
-                ]
-              }
-            ].map((plan, index) => (
-              <Card key={index} className={`relative bg-gray-800 border-gray-700 ${plan.popular ? 'border-white' : ''}`}>
-                {plan.popular && (
-                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                    <Badge className="bg-white text-black">Most Popular</Badge>
-                  </div>
-                )}
-                <CardHeader>
-                  <CardTitle className="text-white">{plan.title}</CardTitle>
-                  <CardDescription className="text-gray-300">{plan.description}</CardDescription>
-                  <div className="text-3xl font-bold text-white">{plan.price}</div>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-3 mb-6">
-                    {plan.features.map((feature, featureIndex) => (
-                      <li key={featureIndex} className="flex items-center gap-2 text-gray-300">
-                        <CheckCircle className="h-4 w-4 text-green-400" />
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                  <Button 
-                    className="w-full bg-white text-black hover:bg-gray-200" 
-                    onClick={() => window.open('https://discord.gg/your-server', '_blank')}
-                  >
-                    <span className="text-black font-semibold">Get Started</span>
+                <CardContent className="p-6">
+                  <h3 className="font-semibold mb-2 text-lg">{item.title}</h3>
+                  <p className="text-sm text-muted-foreground mb-3">{item.description}</p>
+                  <Button variant="outline" size="sm" className="group">
+                    View Details
+                    <ExternalLink className="h-3 w-3 ml-1 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </CardContent>
               </Card>
             ))}
           </div>
-          <div className="text-center mt-12">
-            <p className="text-muted-foreground mb-4">
-              Ready to get started? Join our Discord server to purchase any plan and discuss your project requirements.
-            </p>
+
+          {/* Portfolio CTA */}
+          <div className="text-center flex justify-center space-x-4">
             <Button 
-              size="lg" 
-              variant="outline" 
-              className="border-white text-white hover:bg-white hover:text-black"
-              onClick={() => window.open('https://discord.gg/your-server', '_blank')}
+              size="lg"
+              onClick={openDiscord}
+              className="gradient-purple text-white hover:opacity-90 font-semibold"
             >
-              <span className="font-semibold">Join Discord Server</span>
+              Start Your Project (Discord)
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
+            <Button 
+              size="lg"
+              onClick={openTelegram}
+              variant="outline"
+              className="font-semibold"
+            >
+              Start Your Project (Telegram)
+              <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </div>
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section className="py-16 px-4">
-        <div className="container mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12 text-white">What Our Clients Say</h2>
-          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+      {/* Enhanced Services Section */}
+      <section id="services" className="py-20">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <Badge className="mb-4">What We Do</Badge>
+            <h2 className="text-4xl font-playfair font-bold mb-4 text-gradient">Professional Editing Services</h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              We specialize in two core services that transform your content and maximize its impact. 
+              Every project is handled with precision and creativity.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-12 mb-12">
             {[
               {
-                name: "Alex Thompson",
-                role: "YouTube Creator",
-                content: "Videophix transformed my content! Their editing style perfectly matches my vision, and the thumbnails they create consistently get 40%+ CTR.",
-                rating: 5
+                icon: <Play className="h-10 w-10" />,
+                title: "Video Editing",
+                description: "Transform your raw footage into compelling stories with professional editing techniques",
+                features: [
+                  "Professional color correction and grading",
+                  "Dynamic transitions and effects",
+                  "Audio enhancement and synchronization",
+                  "Motion graphics and text animations",
+                  "Multi-camera editing and switching",
+                  "Sound design and music integration"
+                ],
+                process: "Upload footage → Creative brief → Professional editing → Revisions → Final delivery"
               },
               {
-                name: "Sarah Chen",
-                role: "Twitch Streamer", 
-                content: "The highlight reels they create from my streams are incredible. They know exactly which moments to capture and how to make them engaging.",
-                rating: 5
+                icon: <FileImage className="h-10 w-10" />,
+                title: "Thumbnail Design",
+                description: "Create eye-catching thumbnails that boost click-through rates and viewer engagement",
+                features: [
+                  "Custom graphic design for each video",
+                  "Brand-consistent visual identity",
+                  "High-impact typography and layouts",
+                  "A/B testing optimization suggestions",
+                  "Platform-specific sizing and formats",
+                  "Express delivery options available"
+                ],
+                process: "Video analysis → Design concepts → Client feedback → Refinements → Final files"
+              }
+            ].map((service, index) => (
+              <Card key={index} className="hover-lift">
+                <CardHeader>
+                  <div className="w-20 h-20 gradient-purple rounded-xl flex items-center justify-center text-white mb-6">
+                    {service.icon}
+                  </div>
+                  <CardTitle className="text-2xl mb-2">{service.title}</CardTitle>
+                  <CardDescription className="text-base">{service.description}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-6">
+                    <div>
+                      <h4 className="font-semibold mb-3">What's Included:</h4>
+                      <ul className="space-y-2">
+                        {service.features.map((feature, featureIndex) => (
+                          <li key={featureIndex} className="flex items-start">
+                            <Check className="h-4 w-4 text-primary mr-3 mt-0.5 flex-shrink-0" />
+                            <span className="text-sm">{feature}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold mb-2">Our Process:</h4>
+                      <p className="text-sm text-muted-foreground">{service.process}</p>
+                    </div>
+                    <div className="flex space-x-2">
+                      <Button 
+                        onClick={openDiscord}
+                        className="flex-1"
+                        variant="outline"
+                      >
+                        Discord Quote
+                      </Button>
+                      <Button 
+                        onClick={openTelegram}
+                        className="flex-1"
+                        variant="outline"
+                      >
+                        Telegram Quote
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {/* Services CTA */}
+          <div className="text-center bg-gray-50 rounded-2xl p-8">
+            <h3 className="text-2xl font-semibold mb-4">Need a Custom Solution?</h3>
+            <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
+              We also handle special projects, rush orders, and bulk editing packages. 
+              Let's discuss your specific needs and create a tailored solution.
+            </p>
+            <div className="flex justify-center space-x-4">
+              <Button 
+                size="lg"
+                onClick={openDiscord}
+                className="gradient-purple text-white hover:opacity-90 font-semibold"
+              >
+                Discuss on Discord
+                <MessageCircle className="ml-2 h-4 w-4" />
+              </Button>
+              <Button 
+                size="lg"
+                onClick={openTelegram}
+                variant="outline"
+                className="font-semibold"
+              >
+                Discuss on Telegram
+                <Send className="ml-2 h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Enhanced Pricing Section */}
+      <section id="pricing" className="py-20 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <Badge className="mb-4">Plans & Pricing</Badge>
+            <h2 className="text-4xl font-playfair font-bold mb-4 text-gradient">Choose Your Perfect Plan</h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              Transparent pricing with no hidden fees. All purchases are processed through our Discord or Telegram 
+              for personalized service and direct communication with our team.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8 mb-12">
+            {[
+              {
+                title: "Starter",
+                price: "$49/₹4,100",
+                originalPrice: "$79/₹6,600",
+                description: "Perfect for simple edits and quick turnarounds",
+                features: [
+                  "Basic color correction",
+                  "Simple cuts and transitions",
+                  "Audio level adjustment",
+                  "1-2 day delivery",
+                  "1 revision included",
+                  "HD export (1080p)"
+                ],
+                popular: false,
+                cta: "Start with Basics"
               },
               {
-                name: "Mike Rodriguez",
-                role: "Business Owner",
-                content: "Professional quality at an affordable price. Their Standard plan is perfect for our weekly product reviews. Highly recommend!",
-                rating: 5
+                title: "Professional",
+                price: "$149/₹12,500",
+                originalPrice: "$199/₹16,700",
+                description: "Our most popular choice for content creators",
+                features: [
+                  "Advanced color grading",
+                  "Custom transitions & effects",
+                  "Motion graphics integration",
+                  "Audio enhancement & mixing",
+                  "2-3 day delivery",
+                  "3 revisions included",
+                  "Custom thumbnail design",
+                  "4K export available"
+                ],
+                popular: true,
+                cta: "Most Popular Choice"
+              },
+              {
+                title: "Premium",
+                price: "$299/₹25,000",
+                originalPrice: "$399/₹33,500",
+                description: "Complete package for professional productions",
+                features: [
+                  "Cinema-grade color grading",
+                  "Custom animations & graphics",
+                  "Professional sound design",
+                  "Multi-camera editing",
+                  "3-5 day delivery",
+                  "Unlimited revisions",
+                  "Multiple format exports",
+                  "Priority support",
+                  "Rush delivery available"
+                ],
+                popular: false,
+                cta: "Go Premium"
+              }
+            ].map((plan, index) => (
+              <Card key={index} className={`hover-lift relative ${plan.popular ? 'ring-2 ring-primary scale-105' : ''}`}>
+                {plan.popular && (
+                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                    <Badge className="gradient-purple text-white px-4 py-1">Most Popular</Badge>
+                  </div>
+                )}
+                <CardHeader className="text-center pb-4">
+                  <CardTitle className="text-2xl font-playfair">{plan.title}</CardTitle>
+                  <div className="my-4">
+                    <div className="flex items-center justify-center space-x-2">
+                      <span className="text-4xl font-bold text-gradient">{plan.price}</span>
+                      <div className="text-sm text-muted-foreground">
+                        <div className="line-through">{plan.originalPrice}</div>
+                        <div>per project</div>
+                      </div>
+                    </div>
+                  </div>
+                  <CardDescription className="text-base">{plan.description}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-3 mb-8">
+                    {plan.features.map((feature, featureIndex) => (
+                      <li key={featureIndex} className="flex items-start">
+                        <Check className="h-4 w-4 text-primary mr-3 mt-0.5 flex-shrink-0" />
+                        <span className="text-sm">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="space-y-3">
+                    <div className="flex space-x-2">
+                      <Button 
+                        className={`flex-1 font-semibold ${plan.popular ? 'gradient-purple text-white' : ''}`}
+                        variant={plan.popular ? 'default' : 'outline'}
+                        onClick={openDiscord}
+                      >
+                        Discord
+                      </Button>
+                      <Button 
+                        className="flex-1 font-semibold"
+                        variant="outline"
+                        onClick={openTelegram}
+                      >
+                        Telegram
+                      </Button>
+                    </div>
+                    <p className="text-xs text-center text-muted-foreground">
+                      Choose your platform • Secure payment • Direct communication
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {/* Pricing CTA */}
+          <div className="text-center bg-white rounded-2xl p-8 shadow-sm">
+            <h3 className="text-2xl font-semibold mb-4">Ready to Get Started?</h3>
+            <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
+              Join our Discord server or Telegram channel to discuss your project, ask questions, and complete your purchase. 
+              Our team is ready to help bring your vision to life.
+            </p>
+            <div className="flex justify-center space-x-4">
+              <Button 
+                size="lg"
+                onClick={openDiscord}
+                className="gradient-purple text-white hover:opacity-90 font-semibold"
+              >
+                <MessageCircle className="mr-2 h-5 w-5" />
+                Join Discord & Purchase
+              </Button>
+              <Button 
+                size="lg"
+                onClick={openTelegram}
+                variant="outline"
+                className="font-semibold"
+              >
+                <Send className="mr-2 h-5 w-5" />
+                Join Telegram & Purchase
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section id="testimonials" className="py-20">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <Badge className="mb-4">Client Reviews</Badge>
+            <h2 className="text-4xl font-playfair font-bold mb-4 text-gradient">What Our Clients Say</h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Real feedback from content creators, businesses, and individuals who trust us with their video editing needs
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                name: "Sarah Johnson",
+                role: "YouTube Content Creator",
+                content: "Videophix transformed my channel! Their editing quality is incredible and the turnaround time is amazing. My subscriber count doubled in just 3 months.",
+                rating: 5,
+                project: "Weekly YouTube series editing"
+              },
+              {
+                name: "Michael Chen",
+                role: "Wedding Videographer",
+                content: "The cinematic quality they achieve is outstanding. My clients are always thrilled with the final wedding videos. Professional service every time.",
+                rating: 5,
+                project: "Wedding highlight reels"
+              },
+              {
+                name: "Emma Davis",
+                role: "Marketing Director",
+                content: "Professional, creative, and always on time. They've become our go-to team for all video content. The results speak for themselves.",
+                rating: 5,
+                project: "Corporate video campaigns"
               }
             ].map((testimonial, index) => (
-              <Card key={index} className="bg-gray-800 border-gray-700">
-                <CardHeader>
-                  <div className="flex items-center gap-1 mb-2">
+              <Card key={index} className="hover-lift">
+                <CardContent className="p-6">
+                  <div className="flex mb-4">
                     {[...Array(testimonial.rating)].map((_, i) => (
                       <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                     ))}
                   </div>
-                  <CardDescription className="text-gray-300 italic">
+                  <blockquote className="text-muted-foreground mb-4 italic">
                     "{testimonial.content}"
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 bg-gray-600 rounded-full flex items-center justify-center">
-                      <Users className="h-5 w-5 text-white" />
+                  </blockquote>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center">
+                      <div className="w-10 h-10 gradient-purple rounded-full flex items-center justify-center text-white font-semibold mr-3">
+                        {testimonial.name.split(' ').map(n => n[0]).join('')}
+                      </div>
+                      <div>
+                        <div className="font-semibold">{testimonial.name}</div>
+                        <div className="text-sm text-muted-foreground">{testimonial.role}</div>
+                      </div>
                     </div>
-                    <div>
-                      <p className="font-semibold text-white">{testimonial.name}</p>
-                      <p className="text-sm text-muted-foreground">{testimonial.role}</p>
-                    </div>
+                  </div>
+                  <div className="mt-3 pt-3 border-t border-gray-100">
+                    <Badge variant="outline" className="text-xs">{testimonial.project}</Badge>
                   </div>
                 </CardContent>
               </Card>
@@ -358,46 +630,106 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Contact Section */}
-      <section id="contact" className="py-16 px-4 bg-gray-900">
-        <div className="container mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-4 text-white">Ready to Get Started?</h2>
-          <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Join our Discord community to discuss your project, get quotes, and see more examples of our work.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button 
-              size="lg" 
-              className="bg-white text-black hover:bg-gray-200"
-              onClick={() => window.open('https://discord.gg/your-server', '_blank')}
-            >
-              <span className="text-black font-semibold">Join Our Discord</span>
-            </Button>
-            <Button 
-              size="lg" 
-              variant="outline" 
-              className="border-white text-white hover:bg-white hover:text-black"
-            >
-              <span className="font-semibold">View More Work</span>
-            </Button>
+      {/* Enhanced Contact Section */}
+      <section id="contact" className="py-20 gradient-bg text-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <Badge className="mb-4 bg-white/20 text-white border-white/30">Get in Touch</Badge>
+            <h2 className="text-4xl font-playfair font-bold mb-4">Ready to Transform Your Content?</h2>
+            <p className="text-xl text-gray-200 max-w-3xl mx-auto">
+              Join our Discord community or Telegram channel to discuss your project, get a custom quote, and connect with our editing team. 
+              We're here to help bring your creative vision to life.
+            </p>
           </div>
-          <div className="mt-12 text-muted-foreground">
-            <p>💬 Discord: Join our server for instant support</p>
-            <p>⚡ Fast Response: Usually within 1 hour</p>
-            <p>🎨 Portfolio Reviews: Available on request</p>
+
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div className="space-y-8">
+              <div className="flex items-center space-x-4">
+                <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
+                  <Users className="h-6 w-6" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-lg">Active Community</h3>
+                  <p className="text-gray-200">Connect with other creators and our professional editing team</p>
+                </div>
+              </div>
+              <div className="flex items-center space-x-4">
+                <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
+                  <MessageCircle className="h-6 w-6" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-lg">Direct Communication</h3>
+                  <p className="text-gray-200">Chat directly with our editors throughout your project</p>
+                </div>
+              </div>
+              <div className="flex items-center space-x-4">
+                <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
+                  <Star className="h-6 w-6" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-lg">Premium Support</h3>
+                  <p className="text-gray-200">Dedicated support and project management from start to finish</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="text-center">
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
+                <h3 className="text-2xl font-semibold mb-4">Start Your Project Today</h3>
+                <p className="text-gray-200 mb-6">
+                  Choose your preferred platform to discuss your editing needs and get started with professional video editing services.
+                </p>
+                <div className="space-y-4">
+                  <Button 
+                    size="lg"
+                    onClick={openDiscord}
+                    className="bg-white text-gray-900 hover:bg-gray-100 font-semibold animate-glow w-full"
+                  >
+                    <MessageCircle className="mr-2 h-5 w-5" />
+                    Join Discord Server
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                  <Button 
+                    size="lg"
+                    onClick={openTelegram}
+                    variant="outline"
+                    className="border-white text-white hover:bg-white hover:text-gray-900 font-semibold w-full"
+                  >
+                    <Send className="mr-2 h-5 w-5" />
+                    Join Telegram Channel
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                  <div className="text-center">
+                    <Button 
+                      variant="ghost" 
+                      onClick={() => scrollToSection('pricing')}
+                      className="text-white hover:bg-white/10"
+                    >
+                      View Pricing Plans First
+                    </Button>
+                  </div>
+                </div>
+                <p className="text-sm text-gray-300 mt-4">
+                  Free to join • Instant access • Professional support
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-8 px-4 border-t border-gray-800">
-        <div className="container mx-auto text-center">
-          <p className="text-muted-foreground">
-            © 2024 Videophix. All rights reserved. | 
-            <a href="https://discord.gg/your-server" className="text-white hover:underline ml-1" target="_blank" rel="noopener noreferrer">
-              Join our Discord
-            </a>
-          </p>
+      <footer className="py-8 bg-gray-900 text-gray-400">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <div className="text-2xl font-playfair font-bold text-white mb-4 md:mb-0">
+              Videophix
+            </div>
+            <div className="text-sm text-center md:text-right">
+              <p>© 2024 Videophix. All rights reserved.</p>
+              <p className="mt-1">Professional video editing services | Built for performance and creativity</p>
+            </div>
+          </div>
         </div>
       </footer>
     </div>
